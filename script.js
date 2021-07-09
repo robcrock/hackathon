@@ -1,79 +1,23 @@
-import {
-  format,
-  getUnixTime,
-  fromUnixTime,
-  addMonths,
-  subMonths,
-  startOfWeek,
-  startOfMonth,
-  endOfWeek,
-  endOfMonth,
-  eachDayOfInterval,
-  isSameMonth,
-  isSameDay,
-} from "date-fns"
+import { differenceInWeeks, addYears } from "date-fns"
+import flatpickr from "flatpickr"
 
-const datePickerButton = document.querySelector(".date-picker-button")
-const datePicker = document.querySelector(".date-picker")
-const datePickerHeaderText = document.querySelector(".current-month")
-const previousMonthButton = document.querySelector(".prev-month-button")
-const nextMonthButton = document.querySelector(".next-month-button")
-const dateGrid = document.querySelector(".date-picker-grid-dates")
-let currentDate = new Date()
-
-datePickerButton.addEventListener("click", () => {
-  datePicker.classList.toggle("show")
-  const selectedDate = fromUnixTime(datePickerButton.dataset.selectedDate)
-  currentDate = selectedDate
-  setupDatePicker(selectedDate)
+const fp = flatpickr("#basicDate", {
+  altInput: true,
+  altFormat: "F j, Y",
+  dateFormat: "Y-m-d",
 })
 
-function setDate(date) {
-  datePickerButton.innerText = format(date, "MMMM do, yyyy")
-  datePickerButton.dataset.selectedDate = getUnixTime(date)
-}
-
-function setupDatePicker(selectedDate) {
-  datePickerHeaderText.innerText = format(currentDate, "MMMM - yyyy")
-  setupDates(selectedDate)
-}
-
-function setupDates(selectedDate) {
-  const firstWeekStart = startOfWeek(startOfMonth(currentDate))
-  const lastWeekEnd = endOfWeek(endOfMonth(currentDate))
-  const dates = eachDayOfInterval({ start: firstWeekStart, end: lastWeekEnd })
-  dateGrid.innerHTML = ""
-
-  dates.forEach((date) => {
-    const dateElement = document.createElement("button")
-    dateElement.classList.add("date")
-    dateElement.innerText = date.getDate()
-    if (!isSameMonth(date, currentDate)) {
-      dateElement.classList.add("date-picker-other-month-date")
-    }
-    if (isSameDay(date, selectedDate)) {
-      dateElement.classList.add("selected")
-    }
-    console.log(selectedDate)
-    dateElement.addEventListener("click", () => {
-      setDate(date)
-      datePicker.classList.remove("show")
-    })
-
-    dateGrid.appendChild(dateElement)
-  })
-}
-
-nextMonthButton.addEventListener("click", () => {
-  const selectedDate = fromUnixTime(datePickerButton.dataset.selectedDate)
-  currentDate = addMonths(currentDate, 1)
-  setupDatePicker(selectedDate)
+fp.config.onChange.push(function (selectedDate) {
+  // Declare variables needed.
+  let today = new Date()
+  let weeksLived = differenceInWeeks(today, selectedDate[0])
+  let dateAtEighty = addYears(selectedDate[0], 80)
+  let weeksUntilEighty = differenceInWeeks(dateAtEighty, today)
+  // Build the output message
+  let message = `You have lived ${weeksLived} weeks up to this point. If you make it 80, you've got ${weeksUntilEighty} weeks to go. You are ${
+    parseFloat(weeksLived / (weeksLived + weeksUntilEighty)).toFixed(2) * 100
+  }% of the way there 😬`
+  // Insert the message
+  let output = document.querySelector("#output")
+  output.innerHTML = message
 })
-
-previousMonthButton.addEventListener("click", () => {
-  const selectedDate = fromUnixTime(datePickerButton.dataset.selectedDate)
-  currentDate = subMonths(currentDate, 1)
-  setupDatePicker(selectedDate)
-})
-
-setDate(new Date())

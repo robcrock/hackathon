@@ -5,6 +5,13 @@ body {
   justify-content: center;
 }
 
+.flatpickr-weekdaycontainer {
+  display: flex;
+  flex-direction: row;
+  align-content: space-between;
+  width: 100%;
+}
+
 .date-picker-container {
   position: relative;
   display: inline-block;
