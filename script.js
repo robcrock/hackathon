@@ -1,35 +1,79 @@
-const storiesDiv = document.querySelector('#stories');
-const storyNode = (story) => {
-  var template = document.createElement('template');
-  template.innerHTML = story;
-  return template.content.childNodes[0];
+import {
+  format,
+  getUnixTime,
+  fromUnixTime,
+  addMonths,
+  subMonths,
+  startOfWeek,
+  startOfMonth,
+  endOfWeek,
+  endOfMonth,
+  eachDayOfInterval,
+  isSameMonth,
+  isSameDay,
+} from "date-fns"
+
+const datePickerButton = document.querySelector(".date-picker-button")
+const datePicker = document.querySelector(".date-picker")
+const datePickerHeaderText = document.querySelector(".current-month")
+const previousMonthButton = document.querySelector(".prev-month-button")
+const nextMonthButton = document.querySelector(".next-month-button")
+const dateGrid = document.querySelector(".date-picker-grid-dates")
+let currentDate = new Date()
+
+datePickerButton.addEventListener("click", () => {
+  datePicker.classList.toggle("show")
+  const selectedDate = fromUnixTime(datePickerButton.dataset.selectedDate)
+  currentDate = selectedDate
+  setupDatePicker(selectedDate)
+})
+
+function setDate(date) {
+  datePickerButton.innerText = format(date, "MMMM do, yyyy")
+  datePickerButton.dataset.selectedDate = getUnixTime(date)
 }
-const addStories = (stories) => {
-  for (let index in stories) {
-    const story = stories[index];
-    const html = `<div class="story">
-      <a href="${story.url}">${story.text}</a>
-    </div>`;
-    storiesDiv.appendChild(storyNode(html));
-  }
+
+function setupDatePicker(selectedDate) {
+  datePickerHeaderText.innerText = format(currentDate, "MMMM - yyyy")
+  setupDates(selectedDate)
 }
-if (localStorage.lastFetch && localStorage.stories && (new Date() - localStorage.lastFetch) < (1000*60*60)) {
-  addStories(JSON.parse(localStorage.stories));
-} else {
-  if (localStorage.stories) {
-    addStories(JSON.parse(localStorage.stories));
-  }
-  fetch('https://api.hackernoon.com/featured-stories',{
-      method: 'GET',
-      mode: 'cors',
-      credentials: 'include'
+
+function setupDates(selectedDate) {
+  const firstWeekStart = startOfWeek(startOfMonth(currentDate))
+  const lastWeekEnd = endOfWeek(endOfMonth(currentDate))
+  const dates = eachDayOfInterval({ start: firstWeekStart, end: lastWeekEnd })
+  dateGrid.innerHTML = ""
+
+  dates.forEach((date) => {
+    const dateElement = document.createElement("button")
+    dateElement.classList.add("date")
+    dateElement.innerText = date.getDate()
+    if (!isSameMonth(date, currentDate)) {
+      dateElement.classList.add("date-picker-other-month-date")
+    }
+    if (isSameDay(date, selectedDate)) {
+      dateElement.classList.add("selected")
+    }
+    console.log(selectedDate)
+    dateElement.addEventListener("click", () => {
+      setDate(date)
+      datePicker.classList.remove("show")
     })
-    .then(response => response.json())
-    .then(data => {
-      if (!localStorage.stories) {
-        addStories(data);
-      }
-      localStorage.setItem("stories", JSON.stringify(data));
-      localStorage.setItem("lastFetch", new Date()-1);
-    });
+
+    dateGrid.appendChild(dateElement)
+  })
 }
+
+nextMonthButton.addEventListener("click", () => {
+  const selectedDate = fromUnixTime(datePickerButton.dataset.selectedDate)
+  currentDate = addMonths(currentDate, 1)
+  setupDatePicker(selectedDate)
+})
+
+previousMonthButton.addEventListener("click", () => {
+  const selectedDate = fromUnixTime(datePickerButton.dataset.selectedDate)
+  currentDate = subMonths(currentDate, 1)
+  setupDatePicker(selectedDate)
+})
+
+setDate(new Date())
