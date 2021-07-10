@@ -7,8 +7,19 @@ const fp = flatpickr("#basicDate", {
   dateFormat: "Y-m-d",
 })
 
+window.onload = function () {
+  if (localStorage.getItem("selected") !== null) {
+    const pickedDate = new Date(localStorage.getItem("selected"))
+    calledStatus(pickedDate)
+  }
+  return
+}
+
+// Render the first time
 fp.config.onChange.push(function (selectedDate) {
-  calledStatus(selectedDate)
+  localStorage.setItem("selected", selectedDate[0])
+  const pickedDate = new Date(localStorage.getItem("selected"))
+  calledStatus(pickedDate)
 })
 
 function once(selectedDate) {
@@ -17,15 +28,14 @@ function once(selectedDate) {
   function closure(selectedDate) {
     if (called) {
       // Second time called we don't want anything to happen
-      console.log(called)
       return
     } else {
       // The first time we want to update the called var
       called = true
       // Declare variables needed.
       let today = new Date()
-      let weeksLived = differenceInWeeks(today, selectedDate[0])
-      let dateAtEighty = addYears(selectedDate[0], 80)
+      let weeksLived = differenceInWeeks(today, selectedDate)
+      let dateAtEighty = addYears(selectedDate, 80)
       let weeksUntilEighty = differenceInWeeks(dateAtEighty, today)
       // Build the output message
       let message = `You have lived ${weeksLived
@@ -38,7 +48,7 @@ function once(selectedDate) {
         .replace(/\B(?=(\d{3})+(?!\d))/g, ",")} weeks to go. You are ${
         parseFloat(weeksLived / (weeksLived + weeksUntilEighty)).toFixed(2) *
         100
-      }% of the way there 😬`
+      }% of the way there.`
       // Insert the message
       let output = document.querySelector("#output")
       output.innerHTML = message

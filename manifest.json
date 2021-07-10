@@ -7,9 +7,5 @@
   "chrome_url_overrides": {
     "newtab": "index.html"
   },
-  "permissions": ["storage", "https://api.hackernoon.com/"],
-  "icons": {
-    "16": "icon16.png",
-    "128": "icon128.png"
-  }
+  "permissions": ["storage", "https://api.hackernoon.com/"]
 }
