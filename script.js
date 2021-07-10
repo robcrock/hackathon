@@ -9,6 +9,7 @@ const fp = flatpickr("#basicDate", {
 
 window.onload = function () {
   if (localStorage.getItem("selected") !== null) {
+    document.querySelector("#form").style.display = "none"
     const pickedDate = new Date(localStorage.getItem("selected"))
     calledStatus(pickedDate)
   }
@@ -66,10 +67,14 @@ function once(selectedDate) {
       document.querySelector(".col-9").appendChild(chartSection)
 
       // Add y-axis
+      const yAxisContainer = document.createElement("div")
+      yAxisContainer.classList.add("y-axis-container")
+      chartSection.appendChild(yAxisContainer)
+
       const yAxis = document.createElement("div")
-      yAxis.classList.add("y-axis")
       yAxis.innerHTML = "age"
-      chartSection.appendChild(yAxis)
+      yAxis.classList.add("y-axis")
+      yAxisContainer.appendChild(yAxis)
 
       // CREATE A PLACEHOLDER FOR THE CHART
       const chart = document.createElement("div")

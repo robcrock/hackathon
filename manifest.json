@@ -1,9 +1,9 @@
 {
   "manifest_version": 2,
-  "name": "Fancy Title",
+  "name": "Your Life in Weeks",
   "version": "1.0",
-  "description": "Fancy description...",
-  "author": "Author Name",
+  "description": "We don't know how long we have to live, but this is your life in weeks if you make it to 80",
+  "author": "Robert Crocker & Alan Ye",
   "chrome_url_overrides": {
     "newtab": "index.html"
   },

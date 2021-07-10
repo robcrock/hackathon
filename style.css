@@ -34,7 +34,7 @@ div > input {
 #output {
   margin-top: 8px;
   font-size: 2rem;
-  text-align: justify;
+  /* text-align: justify; */
 }
 
 /*********** DATE PICKER **********/
@@ -73,7 +73,7 @@ div > input {
 }
 
 .col-9 > div {
-  margin-left: 2.4%;
+  transform: translate(32px, 0px);
 }
 
 section > section {
@@ -82,8 +82,8 @@ section > section {
 }
 
 .y-axis {
-  transform: rotate(270deg);
-  margin-bottom: 40%;
+  transform-origin: 0 0;
+  transform: translate(8px, -235px) rotate(270deg);
 }
 
 .grid {
