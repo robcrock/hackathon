@@ -7,5 +7,10 @@
   "chrome_url_overrides": {
     "newtab": "index.html"
   },
+  "icons": {
+    "16": "favicon64x64.png",
+    "48": "favicon32x32.png",
+    "128": "favicon64x64.png"
+  },
   "permissions": ["storage", "https://api.hackernoon.com/"]
 }
