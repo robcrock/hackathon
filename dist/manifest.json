@@ -1,0 +1,16 @@
+{
+  "manifest_version": 2,
+  "name": "Your Life in Weeks",
+  "version": "1.0",
+  "description": "We don't know how long we have to live, but this is your life in weeks if you make it to 80",
+  "author": "Robert Crocker & Alan Ye",
+  "chrome_url_overrides": {
+    "newtab": "index.html"
+  },
+  "icons": {
+    "16": "favicon64x64.png",
+    "48": "favicon32x32.png",
+    "128": "favicon64x64.png"
+  },
+  "permissions": ["storage", "https://api.hackernoon.com/"]
+}
