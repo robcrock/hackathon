@@ -83,7 +83,7 @@ section > section {
 
 .y-axis {
   transform-origin: 0 0;
-  transform: translate(8px, -235px) rotate(270deg);
+  transform: translate(4px, -248px) rotate(270deg);
 }
 
 .grid {
