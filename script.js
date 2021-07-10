@@ -28,13 +28,43 @@ function once(selectedDate) {
       let dateAtEighty = addYears(selectedDate[0], 80)
       let weeksUntilEighty = differenceInWeeks(dateAtEighty, today)
       // Build the output message
-      let message = `You have lived ${weeksLived} weeks up to this point. If you make it 80, you've got ${weeksUntilEighty} weeks to go. You are ${
+      let message = `You have lived ${weeksLived
+        .toString()
+        .replace(
+          /\B(?=(\d{3})+(?!\d))/g,
+          ","
+        )} weeks up to this point. If you make it 80, you've got ${weeksUntilEighty
+        .toString()
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")} weeks to go. You are ${
         parseFloat(weeksLived / (weeksLived + weeksUntilEighty)).toFixed(2) *
         100
       }% of the way there 😬`
       // Insert the message
       let output = document.querySelector("#output")
       output.innerHTML = message
+
+      ////////// Create the chart //////////
+
+      // CREATE SPACE FOR A CHART TITLE
+      const xAxis = document.createElement("div")
+      xAxis.innerHTML = "weeks"
+      document.querySelector(".col-9").appendChild(xAxis)
+      // const yAxis = document.createElement("div")
+
+      // CREATE A SECTION FOR THE CHART AND Y-AXIS
+      const chartSection = document.createElement("section")
+      document.querySelector(".col-9").appendChild(chartSection)
+
+      // Add y-axis
+      const yAxis = document.createElement("div")
+      yAxis.classList.add("y-axis")
+      yAxis.innerHTML = "age"
+      chartSection.appendChild(yAxis)
+
+      // CREATE A PLACEHOLDER FOR THE CHART
+      const chart = document.createElement("div")
+      chart.classList.add("grid")
+      chartSection.appendChild(chart)
 
       const weeksAtEighty = 80 * 52
       for (let i = 0; i < weeksAtEighty; i++) {
@@ -44,7 +74,7 @@ function once(selectedDate) {
         } else {
           emptyCircle.classList.add("emptyLife")
         }
-        document.querySelector(".container").appendChild(emptyCircle)
+        document.querySelector(".grid").appendChild(emptyCircle)
       }
     }
   }

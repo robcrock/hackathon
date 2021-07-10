@@ -1,41 +1,94 @@
 body {
+  padding: 8px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.container {
   margin: 0;
   margin-top: 1rem;
   display: flex;
-  justify-content: center;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
-.flatpickr-weekdaycontainer {
+section > div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+div > input {
+  margin-left: 8px;
+}
+
+.col-3 {
+  min-width: 30%;
+  padding: 20px;
+}
+
+.col-9 {
+  min-width: 70%;
+  padding: 20px;
+}
+
+#output {
+  margin-top: 8px;
+  font-size: 2rem;
+  text-align: justify;
+}
+
+/*********** DATE PICKER **********/
+.flatpickr-grid {
   display: flex;
   flex-direction: row;
   align-content: space-between;
   width: 100%;
 }
 
+.flatpickr-current-month {
+  font-size: 100%;
+  justify-content: center;
+  align-items: center;
+  padding: 2px;
+}
+
+.flatpickr-weekdaycontainer {
+  display: flex;
+  min-width: 100%;
+}
+
+/*********** CHART **********/
 .emptyLife {
-  border-style: solid;
-  background: black;
-  opacity: 0.3;
-  height: 2px;
-  width: 2px;
-  border-radius: 1px;
+  background: #e1e1e1;
+  height: 4px;
+  width: 4px;
+  border-radius: 2px;
 }
 
 .fullLife {
-  border-style: solid;
-  background: red;
-  opacity: 1;
-  height: 2px;
-  width: 2px;
-  border-radius: 1px;
+  background: #f14f4f;
+  height: 4px;
+  width: 4px;
+  border-radius: 2px;
 }
 
-.container {
+.col-9 > div {
+  margin-left: 2.4%;
+}
+
+section > section {
+  display: flex;
+  flex-direction: row;
+}
+
+.y-axis {
+  transform: rotate(270deg);
+  margin-bottom: 40%;
+}
+
+.grid {
   display: grid;
-  grid-template-columns: repeat(52, 8px);
-  grid-template-rows: repeat(80, 8px);
+  grid-template-columns: repeat(52, 6px);
+  grid-template-rows: repeat(80, 6px);
   gap: 1px;
-  margin: 0 20px 20px 0;
-  align-items: center;
-  justify-items: center;
 }
